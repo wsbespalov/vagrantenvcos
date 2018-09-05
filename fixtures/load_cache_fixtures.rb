@@ -1,0 +1,1 @@
+puts "Load cache fixtures..."

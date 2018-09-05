@@ -1,0 +1,1 @@
+puts "Load database fixtures..."
