@@ -1,1 +1,0 @@
-puts "Load database fixtures..."

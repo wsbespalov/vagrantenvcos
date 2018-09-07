@@ -1,6 +1,7 @@
 var http = require('http');
 
-const hostname = "192.168.33.10"
+// const hostname = "192.168.33.10"
+const hostname = 'localhost'
 const port = 3000;
 
 // Start server

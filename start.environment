@@ -1,0 +1,4 @@
+#
+# These are the local values for varios settings (for Host machine and Vagrant container).
+# start.environment should be committed.
+#

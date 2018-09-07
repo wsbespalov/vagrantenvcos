@@ -1,0 +1,15 @@
+#!/bin/bash -e
+BINDIR="$(cd "$(dirname "${0}")" && pwd -P)"
+BASEDIR="$(dirname "${BINDIR}")"
+shift || true
+
+cd "${BASEDIR}"
+
+test -f "default.environment" && source "default.environment"
+test -f "local.environment" && source "local.environment"
+test -f "../app.environment" && source "../app.environment"
+
+cd "${BASEDIR}/src"
+
+npm install
+node server.js

@@ -1,4 +1,4 @@
-local.environment
+# local.environment
 *.pyc
 *.zip
 .runtime
@@ -30,6 +30,7 @@ dump*.json
 /test/tmp/
 /test/version_tmp/
 .env
+.vagrant
 
 .dat*
 .repl_history
