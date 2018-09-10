@@ -1,6 +1,6 @@
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 # | Default values
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 default_box_type            : &default_box_type             'ubuntu/xenial64'
 default_box_provider        : &default_box_provider         'virtualbox'
 default_box_ram             : &default_box_ram              '1024'
@@ -13,35 +13,35 @@ default_box_uartmode1       : &default_box_uartmode1        'disconnected'
 default_ssh_insert_key      : &default_ssh_insert_key       false
 default_sync_folder_guest   : &default_sync_folder_guest    '.'
 default_sync_folder_host    : &default_sync_folder_host     '/home/vagrant'
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-api_box_enabled             : &api_box_enabled              false
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+api_box_enabled             : &api_box_enabled              true
 api_box_name                : &api_box_name                 'cos.api'
 api_box_hostname            : &api_box_hostname             'cos.api.box'
 api_box_public_ip           : &api_box_private_ip           '192.168.33.10'
 api_guest_port              : &api_guest_port               '3000'
 api_host_port               : &api_host_port                '3000'
 api_provision               : &api_provision                'config/provision/api_provision.sh'
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 cache_box_enabled           : &cache_box_enabled            false
 cache_box_name              : &cache_box_name               'cos.cache'
 cache_box_hostname          : &cache_box_hostname           'cos.cache.box'
 cache_box_public_ip         : &cache_box_private_ip         '192.168.33.11'
 cache_guest_port            : &cache_guest_port             '6379'
-cache_host_port             : &cache_host_port              '6378'
+cache_host_port             : &cache_host_port              '6379'
 cache_provision             : &cache_provision              'config/provision/cache_provision.sh'
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-db_box_enabled              : &db_box_enabled               true
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+db_box_enabled              : &db_box_enabled               false
 db_box_name                 : &db_box_name                  'cos.db'
 db_box_hostname             : &db_box_hostname              'cos.db.box'
 db_box_public_ip            : &db_box_private_ip            '192.168.33.12'
 db_guest_port               : &db_guest_port                '27017'
-db_host_port                : &db_host_port                 '27018'
+db_host_port                : &db_host_port                 '27017'
 db_provision                : &db_provision                 'config/provision/db_provision.sh'
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 boxes:
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 # | Configure API box
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 - vm:
     name                    : *api_box_name
     provider                : *default_box_provider
@@ -63,9 +63,9 @@ boxes:
     provision               : *api_provision
     sync_folder_guest       : *default_sync_folder_guest
     sync_folder_host        : *default_sync_folder_host
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 # | Configure CACHE box
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 - vm:
     name                    : *cache_box_name
     provider                : *default_box_provider
@@ -87,9 +87,9 @@ boxes:
     provision               : *cache_provision
     sync_folder_guest       : *default_sync_folder_guest
     sync_folder_host        : *default_sync_folder_host
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 # | Configure DB box
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 - vm:
     name                    : *db_box_name
     provider                : *default_box_provider

@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+echo # | Update system
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 apt-get update --quiet
+
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+echo # | Install packages
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -14,6 +22,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confn
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" install libsasl2-dev
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" install libcurl4-openssl-dev
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" install pkg-config
+
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+echo # | Install MongoDB
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 cd /opt
 
@@ -35,6 +47,8 @@ echo "arguments = ${@}"
 
 if [ $# -gt 0 ]; then
 	mapped_ip=$1
+else
+	mapped_ip="127.0.0.1"
 fi
 
 if [ $# -gt 1 ]; then
@@ -48,15 +62,17 @@ do
 	sudo ufw allow $mp
 done
 
-#
-# Repair
-#
+s+='bindIp: 127.0.0.1/bindIp: "0.0.0.0, '
+s+=${mapped_ip}
+s+='"\nbindIpAll: true'
 
-
-sudo sed -i 's/bindIp: 127.0.0.1/bindIp: "0.0.0.0, 192.168.33.12"\ \n  bindIpAll: true/g' /etc/mongod.conf
-# sudo sed -i 's/bindIp: 127.0.0.1/bindIp: "0.0.0.0, ${mapped_ip}"\ \n  bindIpAll: true/g' /etc/mongod.conf
-# sudo python3 repl.py ${mapped_ip}
+echo "Insert config into /etc/mongod.conf"
+sudo sed -i "s/$s/g" /etc/mongod.conf
 
 # service mongod restart
 sudo systemctl enable mongod
 sudo systemctl start mongod
+
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+echo # | Complete
+echo # | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░

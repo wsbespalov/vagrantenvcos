@@ -31,25 +31,6 @@ config_yaml = YAML.load_file(vagrant_config_file)
 
 VAGRANTFILE_API_VERSION = "2"
 
-# config_yaml['boxes'].each do |vm|
-# 	box = vm['vm']
-# 	if box['provision']
-# 		args = []
-# 		if box['private_network']['ip']
-# 			args.push(box['private_network']['ip'])
-# 		else
-# 			args.push '127.0.0.1'
-# 		end
-# 		if defined? box['forwarded_port']
-# 			box['forwarded_port'].each do |ports|
-# 				args.push(ports['guest'])
-# 			end
-# 		end
-# 		puts args
-# 	end
-# end
-
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config_yaml['boxes'].each do |vm|
 		box = vm['vm']
