@@ -1,4 +1,0 @@
-#
-# These are the local values for varios settings (for application into Vagrant container).
-# local.environment should not be committed.
-#
