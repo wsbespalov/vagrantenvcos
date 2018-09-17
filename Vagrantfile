@@ -1,91 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = "2"
-
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-# | API Box Settings
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-API_BOX_ENABLED 			= ENV.fetch('API_BOX_ENABLED') { 'no' }
-API_BOX_TYPE 				= 'ubuntu/xenial64'
-API_BOX_MEMORY 				= '512'
-API_BOX_VRAM 				= '128'
-API_BOX_CPUEXECUTIONCAP 	= '75'
-API_BOX_NAME 				= 'cos.api'
-API_BOX_HOSTNAME 			= 'cos.api.box'
-API_BOX_SNYC_HOST 			= './src/cos-api'
-API_BOX_SYNC_GUEST 			= '/home/vagrant'
-API_BOX_PRIVATE_IP 			= '192.168.33.10'
-API_BOX_PORT_GUEST 			= '3000'
-API_BOX_PORT_HOST 			= '3000'
-
-$script_API_Provision_Preinstall = <<-SCRIPT
-echo [COS] Run API Provision Preinstall
-apt-get update -y --quiet
-apt-get install python3 -y
-apt-get install python3-pip -y
-pip install flask -y
-python3 app.py
-SCRIPT
-
-$script_API_Provision_Install = <<-SCRIPT
-echo [COD] Run API Provision Install
-SCRIPT
-
-$script_API_Provision_Postinstall = <<-SCRIPT
-echo [COS] Run API Provision Postinstall
-SCRIPT
-
-$script_API_Provision_Always_At_Start = <<-SCRIPT
-echo [COS] Run API Provision Always At Start Script
-SCRIPT
-
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-# | Increadse Swap
-# | ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-$script_Increase_Swap = <<-SCRIPT
-echo [COS] Run Increase Swap Script
-swapsize=8000
-grep -q "swapfile" /etc/fstab
-if [ $? -ne 0 ]; then
-  echo '[COS] Swapfile not found. Adding swapfile.'
-  fallocate -l ${swapsize}M /swapfile
-  chmod 600 /swapfile
-  mkswap /swapfile
-  swapon /swapfile
-  echo '[COS] /swapfile none swap defaults 0 0' >> /etc/fstab
-else
-  echo '[COS] swapfile found. No changes made.'
-fi
-df -h
-cat /proc/swaps
-cat /proc/meminfo | grep Swap
-SCRIPT
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-	# config.ssh.forward_agent = true
-	# config.ssh.default.username = 'vagrant'
-	config.ssh.insert_key = false
-	if API_BOX_ENABLED == 'yes'
-		config.vm.define :api do |api|
-			api.vm.box = API_BOX_TYPE
-			api.vm.hostname = API_BOX_HOSTNAME
-			api.vm.synced_folder API_BOX_SNYC_HOST, API_BOX_SYNC_GUEST
-			api.vm.network :private_network, ip: API_BOX_PRIVATE_IP
-			api.vm.network :forwarded_port, guest: API_BOX_PORT_GUEST, host: API_BOX_PORT_HOST, auto_correct: false
-			api.vm.provider :virtualbox do |v|
-				v.name = API_BOX_NAME
-				v.memory = API_BOX_MEMORY
-				v.customize ["modifyvm", :id, "--vram", API_BOX_VRAM]
-				v.customize ["modifyvm", :id, "--cpuexecutioncap", API_BOX_CPUEXECUTIONCAP]
-			end
-			api.ssh.private_key_path = ["./.ssh/vagrant_rsa", "~/.vagrant.d/insecure_private_key"]
-			api.vm.provision "file", source: "./.ssh/vagrant_rsa.pub", destination: "~/.ssh/authorized_keys"
-			api.vm.provision 'script_Increase_Swap', type: 'shell', preserve_order: true, inline: $script_Increase_Swap
-			api.vm.provision 'script_API_Provision_Preinstall', type: 'shell', preserve_order: true, inline: $script_API_Provision_Preinstall
-			api.vm.provision 'script_API_Provision_Install', type: 'shell', preserve_order: true, inline: $script_API_Provision_Install
-			api.vm.provision 'script_API_Provision_Postinstall', type: 'shell', preserve_order: true, inline: $script_API_Provision_Postinstall
-			api.vm.provision 'script_API_Provision_Always_At_Start', type: 'shell', preserve_order: true, run: 'always', inline: $script_API_Provision_Always_At_Start
-		end
+Vagrant.configure(2) do |config|
+	config.vm.box = "ubuntu/xenial64"
+	config.vm.box_check_update = true
+	config.vm.network "forwarded_port", guest: 3000, host: 3000
+	config.vm.network "forwarded_port", guest: 80, host: 8080
+	config.vm.network "private_network", ip: "192.168.33.10"
+	config.vm.synced_folder "./src/cos-api", "/home/vagrant"
+	config.vm.provider "virtualbox" do |vb|
+		vb.gui = true
+		vb.memory = "1024"
 	end
+	config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update --quiet
+	sudo apt-get install -y python3 python3-pip
+	sudo pip3 install flask
+	sudo pip3 install --upgrade pip
+    cd /home/vagrant/
+    python3 app.py
+  	SHELL
 end

@@ -1,13 +1,5 @@
 #!/bin/bash -e
 
-mkdir ./src
-mkdir ./src/cos-api
-mkdir ./src/cos-api/.ssh
-mkdir ./src/cos-db
-mkdir ./src/cos-db/.ssh
-mkdir ./src/cos-cache
-mkdir ./src/cos-cache/.ssh
-
 BASEDIR="$(cd "$(dirname "${0}")" && pwd -P)"
 
 shift || true
